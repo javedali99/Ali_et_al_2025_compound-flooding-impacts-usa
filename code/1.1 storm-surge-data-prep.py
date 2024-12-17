@@ -167,14 +167,6 @@ def calculate_and_save_timeseries_and_percentiles(df, locations_df):
 
         county_loc_df = df[(df["latitude"] == lat) & (df["longitude"] == lon)]
 
-        # # Create a new column of Date from the date column and change it to datetime format
-        # county_loc_df["time"] = county_loc_df["date"].copy()
-        # county_loc_df["time"] = pd.to_datetime(county_loc_df["time"])
-
-        # # Change the index to date
-        # county_loc_df.set_index("time", inplace=True)
-        # county_loc_df.index = pd.to_datetime(county_loc_df.index)
-
         # Randomization for making all surge and waterlevl values unique in all TS
         np.random.seed(123)
         random_df = lambda x: x + np.random.uniform(0, 1) / (10**7)
@@ -249,48 +241,6 @@ def calculate_and_save_timeseries_and_percentiles(df, locations_df):
         # Copy the county_loc_df to a new dataframe for waterlevel and surge
         county_loc_df_waterlevel = county_loc_df.copy()
         county_loc_df_surge = county_loc_df.copy()
-
-        # # For Surge Data
-        # quant_interp_surge = np.interp(
-        #     county_loc_df_surge["surge"],
-        #     quantiles_surge_df["surge"],
-        #     quantiles_surge_df["surge_percentiles"]
-        # )
-        # # Assign the interpolated percentile values to the surge DataFrame
-        # county_loc_df_surge["surge_percentiles"] = quant_interp_surge
-
-        # # For Water Level Data
-        # quant_interp_waterlevel = np.interp(
-        #     county_loc_df_waterlevel["waterlevel"],
-        #     quantiles_waterlevel_df["waterlevel"],
-        #     quantiles_waterlevel_df["waterlevel_percentile"]
-        # )
-        # # Assign the interpolated percentile values to the water level DataFrame
-        # county_loc_df_waterlevel["waterlevel_percentiles"] = quant_interp_waterlevel
-
-        # Combine county_loc_df_surge with their respective quantiles
-        # quant_interp_surge = np.interp(
-        #     county_loc_df_surge["surge"],
-        #     quantiles_surge_df["surge"],
-        #     quantiles_surge_df["surge_percentiles"],
-        # )
-        # quant_interp_surge = pd.DataFrame(quant_interp_surge)
-        # quant_interp_surge.columns = ["surge_percentiles"]
-        # county_loc_df_surge = pd.concat(
-        #     [county_loc_df_surge, quant_interp_surge], axis=1
-        # )
-
-        # # Combine county_loc_df_waterlevel with their respective quantiles
-        # quant_interp_waterlevel = np.interp(
-        #     county_loc_df_waterlevel["waterlevel"],
-        #     quantiles_waterlevel_df["waterlevel"],
-        #     quantiles_waterlevel_df["waterlevel_percentile"],
-        # )
-        # quant_interp_waterlevel = pd.DataFrame(quant_interp_waterlevel)
-        # quant_interp_waterlevel.columns = ["waterlevel_percentile"]
-        # county_loc_df_waterlevel = pd.concat(
-        #     [county_loc_df_waterlevel, quant_interp_waterlevel], axis=1
-        # )
 
         # Combine county_loc_df_surge with their respective quantiles
         county_loc_df_surge["surge_percentiles"] = np.interp(
