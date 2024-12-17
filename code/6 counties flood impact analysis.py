@@ -4,7 +4,7 @@ Email: javed.ali@ucf.edu
 Date: January 20, 2023
 
 Description:
-This script is designed to perform a flood impact analysis across multiple counties, considering a variety of
+This script is used to perform a flood impact analysis across multiple counties, considering a variety of
 variables such as precipitation, soil moisture, river discharge, storm surge, and wave data. The analysis
 takes into account the average of percentiles for each flooding event recorded in SHELDUS datbase. The results of the 
 analysis are saved in a structured directory format for further inspection.
@@ -950,42 +950,6 @@ def combine_datasets(
         right_on=["Date_discharge", "latitude_discharge", "longitude_discharge"],
     )
 
-    # # Limit latitude and longitude to 6 decimal places for comparison
-    # precip_df["latitude_precip"] = precip_df["latitude_precip"].round(4)
-    # precip_df["longitude_precip"] = precip_df["longitude_precip"].round(4)
-    # soil_moisture_df["latitude_soil_moisture"] = soil_moisture_df[
-    #     "latitude_soil_moisture"
-    # ].round(4)
-    # soil_moisture_df["longitude_soil_moisture"] = soil_moisture_df[
-    #     "longitude_soil_moisture"
-    # ].round(4)
-    # discharge_df["latitude_discharge"] = discharge_df["latitude_discharge"].round(4)
-    # discharge_df["longitude_discharge"] = discharge_df["longitude_discharge"].round(4)
-
-    # # Adjust the date for soil moisture by subtracting one day to use previous day's soil moisture data
-    # soil_moisture_df["Date_soil_moisture_adjusted"] = soil_moisture_df[
-    #     "Date_soil_moisture"
-    # ] - pd.Timedelta(days=1)
-
-    # Merge the datasets based on the dates and locations of each variable
-    # combined_vars_df = pd.merge(
-    #     pd.merge(
-    #         precip_df,
-    #         soil_moisture_df,
-    #         how="inner",  # Changed to inner join to keep only the data that is present in both datasets
-    #         left_on=["Date_precip", "latitude_precip", "longitude_precip"],
-    #         right_on=[
-    #             "Date_soil_moisture_adjusted",
-    #             "latitude_soil_moisture",
-    #             "longitude_soil_moisture",
-    #         ],
-    #     ),
-    #     discharge_df,
-    #     how="left",
-    #     left_on=["Date_precip", "latitude_precip", "longitude_precip"],
-    #     right_on=["Date_discharge", "latitude_discharge", "longitude_discharge"],
-    # )
-
     return combined_vars_df
 
 
@@ -1190,9 +1154,6 @@ def find_nearest_data(
     else:
         calculate_wave_distances = True
 
-    # # Save the subsetted data to a CSV file
-    # combined_vars_df.to_csv(f"{base_path}data/combined_vars_df_sheldus_dates_{county_name}_{FIPS}.csv", index=False)
-
     # Calculate bounding box for the county
     buffer = 2.0  # Buffer in degrees to include a little more area
     min_lon, max_lon = (
@@ -1304,13 +1265,8 @@ def find_nearest_data(
                         comb=True,
                     )
 
-                    # surge_coords = relevant_surge[
-                    #     ["latitude_surge", "longitude_surge"]
-                    # ].to_numpy()
                 else:
-                    # surge_coords = relevant_surge[
-                    #     ["longitude_surge", "latitude_surge"]
-                    # ].to_numpy()
+
                     distances = haversine_vector(
                         [precip_coord],
                         relevant_surge[
@@ -1320,23 +1276,8 @@ def find_nearest_data(
                         comb=True,
                     )
 
-                # Calculate distances using haversine_vector
-                # distances = haversine_vector(
-                #     [precip_coord],
-                #     surge_coords,
-                #     Unit.KILOMETERS,
-                #     comb=True,  # Applying comb=True to avoid NaN values
-                # )
-
                 nearest_surge_index = np.argmin(distances)
                 nearest_surge_data = relevant_surge.iloc[nearest_surge_index]
-
-                # Print the nearest surge data and distance
-                # print("Nearest surge data: ", nearest_surge_data)
-                # print(
-                #     "Distance to nearest surge data: ",
-                #     distances[nearest_surge_index],
-                # )
 
                 # Populate the new columns with the nearest surge data
                 combined_vars_df.at[index, "Date_surge"] = nearest_surge_data[
@@ -1364,9 +1305,7 @@ def find_nearest_data(
 
             if not relevant_wave.empty:
                 if is_gulf_coast:
-                    # wave_coords = relevant_wave[
-                    #     ["latitude_wave", "longitude_wave"]
-                    # ].to_numpy()
+
                     distances = haversine_vector(
                         [precip_coord],
                         relevant_wave[["latitude_wave", "longitude_wave"]].to_numpy(),
@@ -1374,9 +1313,7 @@ def find_nearest_data(
                         comb=True,
                     )
                 else:
-                    # wave_coords = relevant_wave[
-                    #     ["longitude_wave", "latitude_wave"]
-                    # ].to_numpy()
+
                     distances = haversine_vector(
                         [precip_coord],
                         relevant_wave[["longitude_wave", "latitude_wave"]].to_numpy(),
@@ -1384,20 +1321,8 @@ def find_nearest_data(
                         comb=True,
                     )
 
-                # Calculate distances using haversine_vector
-                # distances = haversine_vector(
-                #     [precip_coord],
-                #     wave_coords,
-                #     Unit.KILOMETERS,
-                #     comb=True,  # Applying comb=True to avoid NaN values
-                # )
-
                 nearest_wave_index = np.argmin(distances)
                 nearest_wave_data = relevant_wave.iloc[nearest_wave_index]
-
-                # Print the nearest wave data and distance
-                # print("Nearest wave data: ", nearest_wave_data)
-                # print("Distance to nearest wave data: ", distances[nearest_wave_index])
 
                 # Populate the new columns with the nearest wave data
                 combined_vars_df.at[index, "Date_wave"] = nearest_wave_data["Date_wave"]
@@ -1423,9 +1348,7 @@ def find_nearest_data(
 
             if not relevant_waterlevel.empty:
                 if is_gulf_coast:
-                    # waterlevel_coords = relevant_waterlevel[
-                    #     ["latitude_waterlevel", "longitude_waterlevel"]
-                    # ].to_numpy()
+
                     distances = haversine_vector(
                         [precip_coord],
                         relevant_waterlevel[
@@ -1435,9 +1358,6 @@ def find_nearest_data(
                         comb=True,
                     )
                 else:
-                    # waterlevel_coords = relevant_waterlevel[
-                    #     ["longitude_waterlevel", "latitude_waterlevel"]
-                    # ].to_numpy()
 
                     distances = haversine_vector(
                         [precip_coord],
@@ -1448,25 +1368,10 @@ def find_nearest_data(
                         comb=True,
                     )
 
-                    # Calculate distances using haversine_vector
-                    # distances = haversine_vector(
-                    #     [precip_coord],
-                    #     waterlevel_coords,
-                    #     Unit.KILOMETERS,
-                    #     comb=True,  # Applying comb=True to avoid NaN values
-                    # )
-
                 nearest_waterlevel_index = np.argmin(distances)
                 nearest_waterlevel_data = relevant_waterlevel.iloc[
                     nearest_waterlevel_index
                 ]
-
-                # Print the nearest waterlevel data and distance
-                # print("Nearest waterlevel data: ", nearest_waterlevel_data)
-                # print(
-                #     "Distance to nearest waterlevel data: ",
-                #     distances[nearest_waterlevel_index],
-                # )
 
                 # Populate the new columns with the nearest waterlevel data
                 combined_vars_df.at[index, "Date_waterlevel"] = nearest_waterlevel_data[
@@ -1831,181 +1736,181 @@ def process_county(
         print("Combined variables data with nearest percentiles of surge and wave:")
         print(combined_vars_df)
 
-        # # Calculate the average percentile of all the drivers for each county based on the conditions of 'surge_points' and 'wave_points'
-        # combined_vars_df = calculate_average_percentile(combined_vars_df)
+        # Calculate the average percentile of all the drivers for each county based on the conditions of 'surge_points' and 'wave_points'
+        combined_vars_df = calculate_average_percentile(combined_vars_df)
 
-        # # Save the updated combined_vars_df
-        # combined_vars_df.to_csv(
-        #     f"{base_path}data/combined_vars_with_average_percentile_{county_name}_{FIPS}.csv",
-        #     index=False,
-        # )
+        # Save the updated combined_vars_df
+        combined_vars_df.to_csv(
+            f"{base_path}data/combined_vars_with_average_percentile_{county_name}_{FIPS}.csv",
+            index=False,
+        )
 
-        # # Print the updated combined_vars_df
-        # print("Combined variables data with average percentile of vars:")
-        # print(combined_vars_df)
+        # Print the updated combined_vars_df
+        print("Combined variables data with average percentile of vars:")
+        print(combined_vars_df)
 
-        # #############################################################################################################
-        # ############################# GET THE MAXIMUM AVERAGE OF ALL VARIABLES IN TIME WINDOWs ######################
-        # #############################################################################################################
+        #############################################################################################################
+        ############################# GET THE MAXIMUM AVERAGE OF ALL VARIABLES IN TIME WINDOWs ######################
+        #############################################################################################################
 
-        # # Print that the maximum average percentile for each location is being calculated
-        # print("Calculating the maximum average percentile for each location...")
+        # Print that the maximum average percentile for each location is being calculated
+        print("Calculating the maximum average percentile for each location...")
 
-        # # Limit all latitudes and longitudes to 6 decimal places
-        # precip_locations_df["latitude"] = precip_locations_df["latitude"].round(4)
-        # precip_locations_df["longitude"] = precip_locations_df["longitude"].round(4)
-        # combined_vars_df["latitude_precip"] = combined_vars_df["latitude_precip"].round(
-        #     4
-        # )
-        # combined_vars_df["longitude_precip"] = combined_vars_df[
-        #     "longitude_precip"
-        # ].round(4)
+        # Limit all latitudes and longitudes to 6 decimal places
+        precip_locations_df["latitude"] = precip_locations_df["latitude"].round(4)
+        precip_locations_df["longitude"] = precip_locations_df["longitude"].round(4)
+        combined_vars_df["latitude_precip"] = combined_vars_df["latitude_precip"].round(
+            4
+        )
+        combined_vars_df["longitude_precip"] = combined_vars_df[
+            "longitude_precip"
+        ].round(4)
 
-        # # Set Time as index for the combined_vars_df
-        # combined_vars_df.set_index("Time", inplace=True)
+        # Set Time as index for the combined_vars_df
+        combined_vars_df.set_index("Time", inplace=True)
 
-        # # Convert the index to datetime format
-        # combined_vars_df.index = pd.to_datetime(combined_vars_df.index)
+        # Convert the index to datetime format
+        combined_vars_df.index = pd.to_datetime(combined_vars_df.index)
 
-        # # Initializing the final output dataset
-        # flood_vars_avg_output_df = pd.DataFrame()
+        # Initializing the final output dataset
+        flood_vars_avg_output_df = pd.DataFrame()
 
-        # for i in tqdm(range(len(precip_locations_df))):
-        #     lat = precip_locations_df["latitude"].iloc[i]
-        #     lon = precip_locations_df["longitude"].iloc[i]
-        #     loc_id = precip_locations_df["ID"].iloc[i]
+        for i in tqdm(range(len(precip_locations_df))):
+            lat = precip_locations_df["latitude"].iloc[i]
+            lon = precip_locations_df["longitude"].iloc[i]
+            loc_id = precip_locations_df["ID"].iloc[i]
 
-        #     # Get the data for each location
-        #     df_combined_vars = combined_vars_df[
-        #         (combined_vars_df["latitude_precip"] == lat)
-        #         & (combined_vars_df["longitude_precip"] == lon)
-        #     ]
+            # Get the data for each location
+            df_combined_vars = combined_vars_df[
+                (combined_vars_df["latitude_precip"] == lat)
+                & (combined_vars_df["longitude_precip"] == lon)
+            ]
 
-        #     # Assign location IDs
-        #     df_combined_vars["Location_ID"] = loc_id
+            # Assign location IDs
+            df_combined_vars["Location_ID"] = loc_id
 
-        #     count = 1
+            count = 1
 
-        #     for i in range(len(sheldus_events_dates)):
-        #         start_date = sheldus_events_dates["Hazard_start"].iloc[i]
-        #         end_date = sheldus_events_dates["Hazard_end"].iloc[i]
+            for i in range(len(sheldus_events_dates)):
+                start_date = sheldus_events_dates["Hazard_start"].iloc[i]
+                end_date = sheldus_events_dates["Hazard_end"].iloc[i]
 
-        #         # Get the date range of the window
-        #         first_window_date = start_date - timedelta(days=1)
-        #         last_window_date = end_date + timedelta(days=1)
-        #         window_dates = pd.date_range(first_window_date, last_window_date)
+                # Get the date range of the window
+                first_window_date = start_date - timedelta(days=1)
+                last_window_date = end_date + timedelta(days=1)
+                window_dates = pd.date_range(first_window_date, last_window_date)
 
-        #         # Get the values within the window
-        #         window_values_combined_df = df_combined_vars.loc[
-        #             df_combined_vars.index.intersection(window_dates)
-        #         ]
+                # Get the values within the window
+                window_values_combined_df = df_combined_vars.loc[
+                    df_combined_vars.index.intersection(window_dates)
+                ]
 
-        #         # Assign event IDs
-        #         window_values_combined_df["Event_ID"] = count
+                # Assign event IDs
+                window_values_combined_df["Event_ID"] = count
 
-        #         # Get the max average_percentile values
-        #         max_avg_values_combined_df = window_values_combined_df[
-        #             window_values_combined_df["average_percentile"]
-        #             == window_values_combined_df["average_percentile"].max()
-        #         ]
+                # Get the max average_percentile values
+                max_avg_values_combined_df = window_values_combined_df[
+                    window_values_combined_df["average_percentile"]
+                    == window_values_combined_df["average_percentile"].max()
+                ]
 
-        #         # Concatenate to the main dataframe
-        #         flood_vars_avg_output_df = pd.concat(
-        #             [
-        #                 flood_vars_avg_output_df,
-        #                 max_avg_values_combined_df,
-        #             ],
-        #             axis=0,
-        #         )
+                # Concatenate to the main dataframe
+                flood_vars_avg_output_df = pd.concat(
+                    [
+                        flood_vars_avg_output_df,
+                        max_avg_values_combined_df,
+                    ],
+                    axis=0,
+                )
 
-        #         count += 1
+                count += 1
 
-        # # Save the dataset
-        # flood_vars_avg_output_df.to_csv(
-        #     f"{base_path}data/flood_max_avg_vars_sheldus.csv", index=False
-        # )
+        # Save the dataset
+        flood_vars_avg_output_df.to_csv(
+            f"{base_path}data/flood_max_avg_vars_sheldus.csv", index=False
+        )
 
-        # # Reset the index
-        # flood_vars_avg_output_df.reset_index(inplace=True)
+        # Reset the index
+        flood_vars_avg_output_df.reset_index(inplace=True)
 
-        # # Print the flood output DataFrame
-        # print("Flood average output DataFrame:")
-        # print(flood_vars_avg_output_df)
+        # Print the flood output DataFrame
+        print("Flood average output DataFrame:")
+        print(flood_vars_avg_output_df)
 
-        # # Print the columns of the flood output DataFrame
-        # # print(flood_vars_avg_output_df.columns)
+        # Print the columns of the flood output DataFrame
+        # print(flood_vars_avg_output_df.columns)
 
-        # # Info about the flood output DataFrame
-        # print("Info about the flood average output DataFrame:")
-        # print(flood_vars_avg_output_df.info())
+        # Info about the flood output DataFrame
+        print("Info about the flood average output DataFrame:")
+        print(flood_vars_avg_output_df.info())
 
-        # ###########################################################################################################
+        ###########################################################################################################
 
-        # # Print that the maximum average percentile in SHELDUS windows for each event is being calculated
-        # print(
-        #     "Calculating the maximum average percentile in SHELDUS windows for each event..."
-        # )
+        # Print that the maximum average percentile in SHELDUS windows for each event is being calculated
+        print(
+            "Calculating the maximum average percentile in SHELDUS windows for each event..."
+        )
 
-        # # Extract the maximum average_percentile for each Sheldus window
-        # flood_vars_output_df = pd.DataFrame()
+        # Extract the maximum average_percentile for each Sheldus window
+        flood_vars_output_df = pd.DataFrame()
 
-        # for i in tqdm(range(len(sheldus_events_dates))):
-        #     sheldus_id = sheldus_events_dates["ID"].iloc[i]
+        for i in tqdm(range(len(sheldus_events_dates))):
+            sheldus_id = sheldus_events_dates["ID"].iloc[i]
 
-        #     # Filter `flood_vars_avg_output_df` to retain only entries corresponding to the current event.
-        #     window_values = flood_vars_avg_output_df.loc[
-        #         flood_vars_avg_output_df.Event_ID == sheldus_id
-        #     ]
+            # Filter `flood_vars_avg_output_df` to retain only entries corresponding to the current event.
+            window_values = flood_vars_avg_output_df.loc[
+                flood_vars_avg_output_df.Event_ID == sheldus_id
+            ]
 
-        #     # Add a small random number to avoid ties
-        #     np.random.seed(123)
-        #     window_values["average_percentile"] = window_values[
-        #         "average_percentile"
-        #     ].apply(lambda x: x + np.random.uniform(0, 1) / (10**7))
+            # Add a small random number to avoid ties
+            np.random.seed(123)
+            window_values["average_percentile"] = window_values[
+                "average_percentile"
+            ].apply(lambda x: x + np.random.uniform(0, 1) / (10**7))
 
-        #     # Identify the entry with the maximum average_percentile within the window.
-        #     max_values = window_values[
-        #         window_values["average_percentile"]
-        #         == window_values["average_percentile"].max()
-        #     ]
+            # Identify the entry with the maximum average_percentile within the window.
+            max_values = window_values[
+                window_values["average_percentile"]
+                == window_values["average_percentile"].max()
+            ]
 
-        #     # Concatenate the identified entry to `flood_vars_output_df`.
-        #     flood_vars_output_df = pd.concat([flood_vars_output_df, max_values], axis=0)
+            # Concatenate the identified entry to `flood_vars_output_df`.
+            flood_vars_output_df = pd.concat([flood_vars_output_df, max_values], axis=0)
 
-        # flood_vars_output_df.to_csv(
-        #     f"{base_path}data/max_avg_percentile_flood_vars.csv", index=False
-        # )
+        flood_vars_output_df.to_csv(
+            f"{base_path}data/max_avg_percentile_flood_vars.csv", index=False
+        )
 
-        # print("Flood vars with max avg percentile output:")
-        # print(flood_vars_output_df)
+        print("Flood vars with max avg percentile output:")
+        print(flood_vars_output_df)
 
-        # # Add `Hazard_start` and `Hazard_end` columns to `flood_vars_output_df` based on Event_ID and sheldus_events_dates
-        # # flood_vars_output_df = flood_vars_output_df.merge(
-        # #     sheldus_events_dates, how="left", left_on="Event_ID", right_on="ID"
-        # # )
-
-        # # Merge the `flood_vars_output_df` with the `sheldus_county_data` to get all the event details
+        # Add `Hazard_start` and `Hazard_end` columns to `flood_vars_output_df` based on Event_ID and sheldus_events_dates
         # flood_vars_output_df = flood_vars_output_df.merge(
-        #     sheldus_county_data, how="left", left_on="Event_ID", right_on="ID"
+        #     sheldus_events_dates, how="left", left_on="Event_ID", right_on="ID"
         # )
 
-        # # Define the output file path
-        # output_file_path = f"{base_path}/flood_sheldus_df_{county_name}_{FIPS}.csv"
+        # Merge the `flood_vars_output_df` with the `sheldus_county_data` to get all the event details
+        flood_vars_output_df = flood_vars_output_df.merge(
+            sheldus_county_data, how="left", left_on="Event_ID", right_on="ID"
+        )
 
-        # # Save the final DataFrame
-        # flood_vars_output_df.to_csv(output_file_path, index=False)
+        # Define the output file path
+        output_file_path = f"{base_path}/flood_sheldus_df_{county_name}_{FIPS}.csv"
 
-        # # # Drop the `ID` column
-        # # flood_vars_output_df.drop(columns="ID", inplace=True)
+        # Save the final DataFrame
+        flood_vars_output_df.to_csv(output_file_path, index=False)
 
-        # # # Save the final output
-        # # flood_vars_output_df.to_csv(
-        # #     f"{base_path}data/flood_clim_vars_max_avg_output_final.csv", index=False
-        # # )
+        # # Drop the `ID` column
+        # flood_vars_output_df.drop(columns="ID", inplace=True)
 
-        # # Print the final output
-        # print("Final flood vars with SHELDUS data output:")
-        # print(flood_vars_output_df)
+        # # Save the final output
+        # flood_vars_output_df.to_csv(
+        #     f"{base_path}data/flood_clim_vars_max_avg_output_final.csv", index=False
+        # )
+
+        # Print the final output
+        print("Final flood vars with SHELDUS data output:")
+        print(flood_vars_output_df)
 
         ###########################################################################################################
 
