@@ -1,3 +1,14 @@
+"""
+Author: Javed Ali
+Email: javed.ali@ucf.edu
+
+Description: 
+This script loads and preprocesses the flooding event data, calculates the loss ratios, and 
+creates choropleth maps for the median loss ratios of crop and property damage.
+
+    
+"""
+
 import os
 import warnings
 
@@ -892,15 +903,6 @@ def plot_loss_ratio_map(
                     edgecolor="0.8",
                 )
 
-            # Add legend for yellow color (0 to 1)
-            # yellow_patch = mpatches.Patch(color="yellow", label="Ratio between 0 and 1")
-            # legend = ax.legend(
-            #     handles=[yellow_patch],
-            #     loc="center left",
-            #     bbox_to_anchor=(0.65, 0.3),
-            #     fontsize=16,
-            # )
-
             # Gray out counties where total_loss_crop_damage is 0 for crop damage subplot
             if median_column == "median_loss_ratio_crop_damage":
                 gray_df = merged_data[merged_data["total_loss_crop_damage"] == 0]
@@ -954,70 +956,6 @@ def plot_loss_ratio_map(
 
             plt.tight_layout()
 
-    # Filter the data based on the column
-    # if column == "median_loss_ratio_property_damage":
-    #     # Define the column names for non-CF loss property damage
-    #     median_non_cf_column = "median_non_cf_loss_property_damage"
-
-    #     above_100_df = merged_data[
-    #         (
-    #             ((merged_data[column] > 50) | (np.isinf(merged_data[column])))
-    #             | (merged_data[median_non_cf_column] == 0)
-    #         )
-    #     ]  # Counties with ratio above 100 for median ratio or ratio 0 but non-CF median loss property damage not 0
-
-    #     yellow_df = merged_data[
-    #         ((merged_data[column] > 0) & (merged_data[column] <= 1))
-    #         # | ((merged_data[column] == 0) & (merged_data[avg_non_cf_column] != 0))
-    #     ]  # Counties with ratio between 0 and 1 or ratio 0 but non-CF average loss property damage not
-    #     continuous_df = merged_data[
-    #         (merged_data[column] > 1) & (merged_data[column] <= 50)
-    #     ]  # Counties with ratio between 1 and 100
-
-    #     # Define the color intervals and the corresponding colormap
-    #     boundaries = [
-    #         1,
-    #         5,
-    #         10,
-    #         15,
-    #         20,
-    #         25,
-    #         30,
-    #         35,
-    #         40,
-    #         45,
-    #         50,
-    #     ]  # Add intervals with a step of 5
-    #     cmap = plt.colormaps["rocket_r"]  # Access the colormap using the new syntax
-    #     last_color = cmap(1.0)  # Get the last color in the colormap
-    #     cmap = ListedColormap(
-    #         cmap(np.linspace(0, 1, len(boundaries) - 1))
-    #     )  # Create a ListedColormap with the correct number of colors
-    #     norm = BoundaryNorm(boundaries, ncolors=len(boundaries), extend="max")
-
-    #     # Create a colorbar to indicate overflow
-    #     sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
-    #     sm.set_array([])
-    #     cbar = fig.colorbar(sm, ax=ax, shrink=0.5, pad=0.0001, extend="max")
-    #     cbar.set_label(
-    #         "Property Loss Ratio (CF/non-CF)", fontsize=20, rotation=90, labelpad=10
-    #     )
-    #     cbar.set_ticks(boundaries)  # Set the ticks to match the boundaries
-    #     cbar.ax.set_yticklabels(
-    #         [str(b) for b in boundaries],
-    #         fontsize=20,
-    #     )  # Custom ticks
-    #     # cbar.ax.set_yticklabels(
-    #     #     ["1", "10", "20", "30", "40", "50"],
-    #     #     fontsize=20,
-    #     # )  # Custom ticks
-
-    #     # Print the number of counties in each category
-    #     print(f"\nMedian Loss Ratios: {column}")
-    #     print(f"No. of counties with ratio above 50: {above_100_df.shape[0]}")
-    #     print(f"No. of counties with ratio between 0 and 1: {yellow_df.shape[0]}")
-    #     print(f"No. of counties with ratio between 1 and 50: {continuous_df.shape[0]}")
-
     elif column == "avg_loss_ratio_property_damage":
 
         fig, ax = plt.subplots(1, 1, figsize=figsize)
@@ -1032,7 +970,6 @@ def plot_loss_ratio_map(
         ]  # Counties with ratio above 100 for average ratio or ratio 0 but non-CF average loss property damage not 0
         yellow_df = merged_data[
             ((merged_data[column] > 0) & (merged_data[column] <= 1))
-            # | ((merged_data[column] == 0) & (merged_data[avg_non_cf_column] != 0))
         ]  # Counties with ratio between 0 and 1 or ratio 0 but non-CF average loss property damage not
         continuous_df = merged_data[
             (merged_data[column] > 1) & (merged_data[column] <= 100)
@@ -1051,7 +988,6 @@ def plot_loss_ratio_map(
             80,
             90,
             100,
-            # 110,
         ]  # Add an interval for values above 100
         cmap = plt.colormaps["rocket_r"]  # Access the colormap using the new syntax
         last_color = cmap(1.0)  # Get the last color in the colormap
@@ -1090,10 +1026,6 @@ def plot_loss_ratio_map(
         print(f"No. of counties with ratio above 100: {above_100_df.shape[0]}")
         print(f"No. of counties with ratio between 0 and 1: {yellow_df.shape[0]}")
         print(f"No. of counties with ratio between 1 and 100: {continuous_df.shape[0]}")
-
-        # Print data for each category
-        # print("\nData for counties with ratio above 100:")
-        # print(above_100_df[column])
 
         # Plot the states with county information
         states_with_counties.boundary.plot(ax=ax, linewidth=0.5, color="black")
