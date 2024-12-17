@@ -139,14 +139,8 @@ def plot_clusters(merged_data, shapefile_url, shapefile_state_url):
         eastern_usa_state, merged_data, how="inner", predicate="intersects"
     )
 
-    # Add background map with light gray color to show counties and state boundaries clearly
-    # eastern_usa.boundary.plot(ax=ax, linewidth=0.5, color="0.8")
-
     # Plot the states with county information
     states_with_counties.boundary.plot(ax=ax, linewidth=0.5, color="black")
-
-    # Get the 'tab10' or 'tab20b' colormap based on the number of clusters
-    # tab10 = plt.get_cmap("tab10")
 
     # Make first cluster orange, second cluster green, third cluster red, fourth cluster purple, fifth cluster brown
     custom_colors = [
@@ -154,16 +148,8 @@ def plot_clusters(merged_data, shapefile_url, shapefile_state_url):
         "green",
         "red",
         "purple",
-        # "brown",
-        # "blue",
     ]
     cmap = mcolors.ListedColormap(custom_colors)
-
-    # Create a new colormap from the first 15 colors of 'tab20b'
-    # cmap = mcolors.ListedColormap(tab10.colors[:5])
-
-    # Create a colormap with 10 distinct colors
-    # cmap = mcolors.ListedColormap(sns.color_palette("hsv", 10))
 
     # Make the colors same for same cluster and use different colors for different clusters
     cluster_plot = merged_data.plot(
@@ -191,26 +177,6 @@ def plot_clusters(merged_data, shapefile_url, shapefile_state_url):
     colorbar.yaxis.set_major_locator(
         MaxNLocator(integer=True)
     )  # Set tick labels to integers
-
-    # Calculate the centroid and representative point of each state and create a DataFrame that contains the state abbreviations and these points
-    # state_centroids = merged_data.dissolve(by="STUSPS").reset_index()
-    # state_centroids["centroid"] = state_centroids.geometry.centroid
-    # state_points = merged_data.dissolve(by="STUSPS").reset_index()
-    # state_points["point"] = state_points.geometry.representative_point()
-
-    # # Create a transformation that moves the text to the right and up
-    # trans = Affine2D().translate(100, 200)
-
-    # # Add state abbreviations at the representative point of each state
-    # for idx, row in state_points.iterrows():
-    #     plt.text(
-    #         row["point"].x,
-    #         row["point"].y,
-    #         row["STUSPS"],
-    #         fontsize=12,
-    #         ha="center",
-    #         # transform=trans + ax.transData,
-    #     )
 
     # Remove axis spines
     ax.spines["right"].set_visible(False)
