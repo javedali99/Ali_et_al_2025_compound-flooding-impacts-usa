@@ -43,7 +43,7 @@ These scripts process flood drivers datasets to prepare for analysis:
 
 ### **2. Flood Impact Analysis**  
 Scripts to combine and analyze flooding events and their socio-economic impacts:  
-- **`6_counties_flood_impact_analysis.py`**: Aggregates flood driver data at the county level and identifies significant compound events.  
+- **`6_counties_flood_impact_analysis.py`**: Analyzes flood driver data at the county level and identifies significant compound events.  
 - **`10_create-drivers-contributions-columns-in-final-df.py`**: Computes contributions of each hydrometeorological driver to compound flood events.  
 - **`11_subset-final-df-csv.py`**: Filters the final dataset based on thresholds for compound flooding events and excludes irrelevant FIPS codes.  
 
