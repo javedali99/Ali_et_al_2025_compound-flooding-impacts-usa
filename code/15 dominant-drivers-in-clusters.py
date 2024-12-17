@@ -5,8 +5,11 @@ Author: Javed Ali
 Email: javedali28@gmail.com
 Date: May 13, 2024
 
-Description: This script calculates the average contribution percentage for each variable per cluster and creates pie charts for each cluster showing the average contribution percentages for each variable. 
-The script loads the dataframes, merges them based on 'county_name' and 'FIPS' columns, calculates the average contribution percentages for each variable per cluster, and creates pie charts for each cluster.
+Description: 
+This script calculates the average contribution percentage for each variable per cluster and creates pie charts 
+for each cluster showing the average contribution percentages for each variable. The script loads the dataframes, 
+merges them based on 'county_name' and 'FIPS' columns, calculates the average contribution percentages for each 
+variable per cluster, and creates pie charts for each cluster.
 
 """
 
@@ -100,14 +103,6 @@ def create_pie_charts(df, save_path):
         4: "(38 counties)",
     }
 
-    # fig, axs = plt.subplots(1, num_clusters, figsize=(8 * num_clusters, 12))
-
-    # fig.suptitle(
-    #     "Average Contribution Percentages by Cluster",
-    #     fontsize=24,
-    #     weight="bold",
-    # )
-
     for i, (cluster, row) in enumerate(df.iterrows()):
         values = row.values
         labels = [
@@ -128,37 +123,6 @@ def create_pie_charts(df, save_path):
         cmap = plt.get_cmap("tab20c")
         colors = cmap(np.array([14, 6, 0, 9, 4]))
 
-        ############################################################################
-        ######################## BAR CHARTS ########################################
-        ############################################################################
-
-        # axs[i].bar(labels, values, color=colors)
-        # axs[i].set_title(f"Cluster {cluster}", fontsize=20, weight="bold")
-        # axs[i].set_ylabel("Average Contribution (%)")
-        # axs[i].set_ylim(0, 100)
-
-        # # Increase the fontsize of the x and y axis labels
-        # axs[i].tick_params(axis="x", labelsize=16)
-        # axs[i].tick_params(axis="y", labelsize=16)
-
-        # # Incraese the fontsize of the tick labels on the x-axis and y-axis
-        # axs[i].set_xticklabels(labels, fontsize=16)
-        # axs[i].set_yticklabels(np.arange(0, 101, 20), fontsize=16)
-
-        # Define the x and y ticks
-        # x_ticks = np.arange(len(labels))
-        # y_ticks = np.arange(0, 101, 20)
-
-        # # Set the x and y ticks
-        # axs[i].set_xticks(x_ticks)
-        # axs[i].set_yticks(y_ticks)
-
-        # # Set the x and y tick labels
-        # axs[i].set_xticklabels(labels, fontsize=16)
-        # axs[i].set_yticklabels(y_ticks, fontsize=16)
-
-        ############################################################################
-
         patches, texts, autotexts = axs[i].pie(
             values,
             labels=labels,
@@ -167,13 +131,6 @@ def create_pie_charts(df, save_path):
             startangle=90,
             textprops={"fontsize": 16},
         )
-
-        # axs[i].set_title(
-        #     f"Cluster {cluster}",
-        #     fontsize=22,
-        #     weight="bold",
-        #     # backgroundcolor="lightgrey",
-        # )
 
         title = f"Cluster {cluster}"
         subtitle = cluster_info.get(cluster, "")
@@ -200,37 +157,6 @@ def create_pie_charts(df, save_path):
         # Adjust the position of each label
         for text in texts:
             text.set_position((text.get_position()[0], text.get_position()[1] * 1.05))
-
-        # Add a circle at the centre of the pie chart
-        # my_circle = plt.Circle(
-        #     (0, 0), 0.3, color="white"
-        # )  # Adding circle at the centre of the pie chart
-
-        # axs[i].add_artist(my_circle)
-
-        # Remove any unused subplots
-        # for i in range(num_clusters, num_rows * num_cols):
-        #     fig.delaxes(axs[i])
-
-        # Adjust the position of each label
-        # for text in texts:
-        #     text.set_position((text.get_position()[0], text.get_position()[1] * 1.05))
-
-        # Add a circle at the centre of the pie chart
-        # my_circle = plt.Circle((0, 0), 0.3, color="white")
-        # axs[i].add_artist(my_circle)
-
-        # # Add text inside the circle
-        # if cluster in cluster_info:
-        #     axs[i].text(
-        #         0,
-        #         0,
-        #         cluster_info[cluster],
-        #         horizontalalignment="center",
-        #         verticalalignment="center",
-        #         fontsize=14,
-        #         weight="bold",
-        # )
 
     plt.tight_layout()
 
