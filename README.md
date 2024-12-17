@@ -14,7 +14,7 @@
 
 </br>
 
-This repository contains the complete data processing, analysis, and visualization scripts supporting the research paper: "Multivariate compound events drive historical floods and associated losses along the U.S. East and Gulf coasts", currently under review at [npj Natural Hazards](https://www.nature.com/npjnathazards/).
+This repository contains the complete data processing, analysis, impact assessment, clustering, spatial analysis, and visualization scripts supporting the research paper: "Multivariate compound events drive historical floods and associated losses along the U.S. East and Gulf coasts", currently under review at [npj Natural Hazards](https://www.nature.com/npjnathazards/).
 
 The study investigates compound flood events caused by multiple hydrometeorological drivers (e.g., storm surge, precipitation, river discharge, soil moisture, wave heights) across 203 coastal counties in the U.S. East and Gulf coasts from 1980 to 2018. We quantify flood frequencies, identify dominant drivers, analyze regional patterns, and link these events to socio-economic losses (e.g., property and crop damage).
 
@@ -27,168 +27,70 @@ The study investigates compound flood events caused by multiple hydrometeorologi
 
 </br>
 
-## **Description**  
-The project analyzes multivariate **compound flood events** by combining hydrometeorological drivers:  
-- **Storm Surge**  
-- **Precipitation**  
-- **River Discharge**  
-- **Soil Moisture**  
-- **Wave Heights**  
-
-We assess how these drivers contribute to floods and evaluate the resulting **socioeconomic losses** (e.g., property damage, crop loss).  
-
-The scripts perform:  
-1. **Data Processing**: Prepares large datasets of climate drivers and flood impacts.  
-2. **Flood Impact Analysis**: Quantifies contributions of individual drivers to compound events.  
-3. **Visualization**: Generates maps, heatmaps, pie charts, bar plots, and clustering outputs.  
-4. **Spatial Analysis**: Identifies regions with similar flood characteristics using hierarchical clustering.  
 
 
-
-## **Repository Contents**  
+## **Scripts Description**
 
 ### **1. Data Preprocessing**  
-Scripts to clean and preprocess hydrometeorological data and SHELDUS socioeconomic loss datasets:  
-- **Storm Surge**: [`1_storm-surge-data-prep.py`](./1_storm-surge-data-prep.py)  
-- **Precipitation**: [`2_precip-data-prep.py`](./2_precip-data-prep.py)  
-- **River Discharge**: [`3_discharge-data-prep.py`](./3_discharge-data-prep.py)  
-- **Soil Moisture**: [`4_soil-moisture-data-prep.py`](./4_soil-moisture-data-prep.py)  
-- **Wave Heights**: [`5_wave-data-prep.py`](./5_wave-data-prep.py)  
-- **County and Metadata Update**: [`7_update-county_names_fips_codes_states_coasts_df.py`](./7_update-county_names_fips_codes_states_coasts_df.py)  
+These scripts process flood drivers datasets to prepare for analysis:  
+- **`1_storm-surge-data-prep.py`**: Prepares storm surge data, computes percentiles, and extracts maxima during hazard windows.  
+- **`2_precip-data-prep.py`**: Processes precipitation data, filters relevant time periods, and computes peak rainfall events.  
+- **`3_discharge-data-prep.py`**: Prepares river discharge data, resamples to daily maxima, and analyzes key hazard periods.  
+- **`4_soil-moisture-data-prep.py`**: Analyzes soil moisture data, calculates percentiles, and integrates with hazard data.  
+- **`5_wave-data-prep.py`**: Prepares wave height data, calculates percentiles, and identifies maxima during hazard windows.  
+
+---
 
 ### **2. Flood Impact Analysis**  
-Analyzing county-level flood impacts and contributions of each driver:  
-- [`6_counties_flood_impact_analysis.py`](./6_counties_flood_impact_analysis.py)  
-- **Driver Contributions**: [`10_create-drivers-contributions-columns-in-final-df.py`](./10_create-drivers-contributions-columns-in-final-df.py)  
+Scripts to combine and analyze flooding events and their socio-economic impacts:  
+- **`6_counties_flood_impact_analysis.py`**: Aggregates flood driver data at the county level and identifies significant compound events.  
+- **`10_create-drivers-contributions-columns-in-final-df.py`**: Computes contributions of each hydrometeorological driver to compound flood events.  
+- **`11_subset-final-df-csv.py`**: Filters the final dataset based on thresholds for compound flooding events and excludes irrelevant FIPS codes.  
+
+---
 
 ### **3. Visualization**  
-Scripts to visualize flood drivers and impacts:  
-- **Heatmaps**: [`8_heatmaps_for_all_counties.py`](./8_heatmaps_for_all_counties.py)  
-- **Pie Charts**: [`9_piecharts_for_compound_events.py`](./9_piecharts_for_compound_events.py)  
-- **State-Level Bar Plots**: [`16_barplot-state-level-ce.py`](./16_barplot-state-level-ce.py)  
+Scripts to visualize the results of flood driver analysis:  
+- **`8_heatmaps_for_all_counties.py`**: Generates heatmaps to display driver contributions across all counties.  
+- **`9_piecharts_for_compound_events.py`**: Creates pie charts showing the contributions of each driver to flooding events for key counties.  
+- **`16_barplot-state-level-ce.py`**: Produces bar plots highlighting the percentage of compound events and losses at the state level.  
+
+---
 
 ### **4. Clustering and Spatial Analysis**  
-Tools to identify patterns and visualize spatial distributions:  
-- **Hierarchical Clustering**:  
-   - [`12_hierarchical-clustering.py`](./12_hierarchical-clustering.py)  
-   - [`13_visualize-clustering-results.py`](./13_visualize-clustering-results.py)  
-- **Spatial Mapping**: [`15_create-maps-for-spatial-distributions.py`](./15_create-maps-for-spatial-distributions.py)  
+Scripts to identify spatial patterns and dominant flood drivers:  
+- **`12_hierarchical-clustering.py`**: Performs hierarchical clustering to group counties with similar compound flooding characteristics.  
+- **`13_visualize-clustering-results.py`**: Generates spatial maps to visualize clustering results.  
+- **`14_dominant-drivers-in-clusters.py`**: Summarizes the dominant flood drivers for each identified cluster using pie charts.  
+- **`15_create-maps-for-spatial-distributions.py`**: Creates choropleth maps to visualize flood driver contributions and loss metrics across counties.  
+
+---
 
 ### **5. Loss Contribution Analysis**  
-Analyzing socioeconomic impacts:  
-- **Median Loss Analysis**: [`17_median-CF-losses-contributions.py`](./17_median-CF-losses-contributions.py)  
-- **Subsetting Final Data**: [`11_subset-final-df-csv.py`](./11_subset-final-df-csv.py)  
+Scripts for detailed analysis of property and crop losses due to compound flooding:  
+- **`17_median-CF-losses-contributions.py`**: Computes median loss contributions for property and crop damage and generates maps to display the results.  
 
 ---
 
-## **Setup Instructions**  
+## **Figures**
 
-### **1. Prerequisites**  
-Install the following Python libraries:  
-```bash
-pip install pandas numpy matplotlib seaborn geopandas cartopy scipy tqdm scikit-learn
-```
+The following visualizations are generated and stored in the `figures/` directory:
 
-### **2. Directory Structure**  
-Organize your working directory as follows:  
-```bash
-repository/
-│-- data/
-│   ├── ready-data/                # Raw hydrometeorological and SHELDUS data
-│   ├── ready-for-analysis/        # Processed data for analysis
-│-- outputs/                       # All visualization and analysis outputs
-│-- scripts/                       # Python scripts (current directory)
-│-- figures/                       # Output plots and maps
-│-- README.md                      # This README file
-```
+1. **Fig.1**: **Percentage of Compound Flooding Events** – Displays county-level compound flooding percentages.  
+2. **Fig.2**: **Flood Driver Metrics** – Shows contributions of flood drivers across multiple metrics.  
+3. **Fig.3**: **Top-10 Counties Pie Charts** – Highlights the drivers contributing to flood events in the top-10 counties.  
+4. **Fig.4**: **Cluster-Specific Pie Charts** – Summarizes flood driver variability within identified clusters.  
+5. **Fig.5**: **Cluster Distributions** – Visualizes spatial distributions of county clusters with similar flood characteristics.  
+6. **Fig.6**: **Loss and Loss Ratios** – Compares property and crop losses for compound and univariate flood events.  
+7. **Fig.7**: **Methodology Flowchart** – Summarizes the workflow of data preparation, analysis, and visualization.  
 
----
 
-## **Usage**  
-
-### **1. Data Preprocessing**  
-Run the preprocessing scripts to prepare the raw data:  
-```bash
-python 1_storm-surge-data-prep.py  
-python 2_precip-data-prep.py  
-python 3_discharge-data-prep.py  
-python 4_soil-moisture-data-prep.py  
-python 5_wave-data-prep.py  
-```
-
-### **2. Flood Impact Analysis**  
-Execute the county-level analysis:  
-```bash
-python 6_counties_flood_impact_analysis.py  
-python 10_create-drivers-contributions-columns-in-final-df.py  
-```
-
-### **3. Visualization**  
-Generate heatmaps, pie charts, and state-level plots:  
-```bash
-python 8_heatmaps_for_all_counties.py  
-python 9_piecharts_for_compound_events.py  
-python 16_barplot-state-level-ce.py  
-```
-
-### **4. Clustering and Mapping**  
-Perform hierarchical clustering and create spatial maps:  
-```bash
-python 12_hierarchical-clustering.py  
-python 13_visualize-clustering-results.py  
-python 15_create-maps-for-spatial-distributions.py  
-```
-
-### **5. Loss Analysis**  
-Analyze loss contributions and median flood impacts:  
-```bash
-python 17_median-CF-losses-contributions.py  
-python 11_subset-final-df-csv.py  
-```
-
----
-
-## **Outputs**  
-- **Heatmaps**: Flood driver contributions per county.  
-- **Pie Charts**: Visualizing dominant drivers for compound events.  
-- **Bar Plots**: State-level flood event percentages and losses.  
-- **Maps**: Spatial distributions of compound flooding metrics.  
-- **Clustering Results**: Identification of regions with similar flood characteristics.  
-
-Outputs are saved in the `/figures` and `/outputs` directories.  
-
----
-
-## **Contributing**  
-Contributions are welcome! To suggest improvements or report bugs:  
-1. Fork the repository.  
-2. Create a new branch (`git checkout -b feature/your-feature`).  
-3. Commit your changes (`git commit -m "Add feature"`).  
-4. Push to the branch (`git push origin feature/your-feature`).  
-5. Create a pull request.  
-
----
-
-## **Citations**  
-If you use this repository, please cite the paper:  
-```  
-Ali, J., Wahl, T., Morim, J., et al.  
-"Multivariate compound events drive historical floods and associated losses along the U.S. East and Gulf coasts."  
-DOI: 10.21203/rs.3.rs-5040855/v1  
-```  
-
----
-
-## **License**  
-This project is licensed under the MIT License. See [LICENSE](./LICENSE) for details.
-
----
 
 ## **Contact**  
-For questions, contact:  
+
+For questions or suggestions, please contact:  
+
 **Javed Ali**  
-- Email: [javed.ali@ucf.edu](mailto:javed.ali@ucf.edu)  
+- Email: [javed.ali@ucf.edu](mailto:javed.ali@ucf.edu)
 
----
 
-This README is highly detailed, clear, and structured to provide ease of use for collaborators and researchers. Let me know if you'd like additional sections or refinements!
