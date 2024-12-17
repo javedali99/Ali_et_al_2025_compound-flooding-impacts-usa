@@ -272,19 +272,7 @@ def calculate_and_save_timeseries_and_percentiles(
         # Copy the county_loc_df DataFrame to a new DataFrame
         county_loc_df2 = county_loc_df.copy()
 
-        # Combine county_loc_df moisture data with their corresponding quantiles
-        # quant_interp = np.interp(
-        #     county_loc_df2["swvl1"],
-        #     quantiles_df["swvl1"],
-        #     quantiles_df["Percentiles"],
-        # )
-
-        # quant_interp = pd.DataFrame(quant_interp)
-        # quant_interp.columns = ["Percentiles"]
-        # county_loc_df2 = pd.concat([county_loc_df2, quant_interp], axis=1)
-
-        # Instead of converting quant_interp to a DataFrame and then concatenating,
-        # directly assign the interpolated values to a new column in county_loc_df2
+        # Calculate the percentiles for each location
         county_loc_df2["Percentiles"] = np.interp(
             county_loc_df2["swvl1"],
             quantiles_df["swvl1"],
@@ -292,9 +280,6 @@ def calculate_and_save_timeseries_and_percentiles(
                 "Percentiles"
             ],  # Use the index directly for mapping percentiles
         )
-
-        # Print the soil moisture data with percentiles
-        # print(county_loc_df2.head())
 
         # Save the combined DataFrame to a CSV file
         county_loc_df2.to_csv(
@@ -401,9 +386,6 @@ def max_moisture_in_hazard_window_and_percentiles(
 
         county_loc_df = df[(df["latitude"] == lat) & (df["longitude"] == lon)]
 
-        # Convert hourly data to daily maximum values for each location
-        # county_loc_df = county_loc_df.resample("D").max()
-
         np.random.seed(123)
         random_df = lambda x: x + np.random.uniform(0, 1) / (10**7)
         county_loc_df["swvl1"] = list(map(random_df, county_loc_df["swvl1"]))
@@ -500,10 +482,6 @@ def combine_all_locations_data(dir_path, output_filename):
     # Concatenate all dataframes in dfs list
     df_all = pd.concat(dfs, ignore_index=True)
 
-    # # Check if "swvl1" column exists in the combined data
-    # if "swvl1" in df_all.columns and df_all["swvl1"].isna().any():
-    #     print(f"Warning: 'swvl1' column in the combined data contains some NaN values. Keeping the column.")
-
     # Sort the combined DataFrame by the "Date" column
     if "Date" in df_all.columns:
         df_all_sorted = df_all.sort_values(by="Date")
@@ -537,11 +515,6 @@ def process_county_data(moisture_file, sheldus_file):
     )  # This ensures we get county names with two or more words
     fips_code = split_name[-2]
 
-    # Skip processing for "Nantucket County"
-    # if county_name == "Nantucket":
-    #     print(f"Skipping processing for {county_name}.")
-    #     return
-
     ensure_county_directories_exist(county_name, fips_code)
 
     # Preprocess data
@@ -571,7 +544,7 @@ def process_county_data(moisture_file, sheldus_file):
     # Sheldus hazard analysis
     max_moisture_in_hazard_window_and_percentiles(
         sheldus_data, moisture_data, unique_locations, county_name, fips_code
-    ) 
+    )
 
     # Combine the data in max_values directory for the county
     dir_path = f"{BASE_PATH}{county_name}_{fips_code}/max_values"
