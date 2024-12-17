@@ -112,7 +112,6 @@ def create_pie_charts(df, save_path):
             "Storm Surge",
             "Waves",
         ]
-        # colors = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"]
 
         # Print the values and labels for each cluster
         print(f"Cluster {cluster}:")
