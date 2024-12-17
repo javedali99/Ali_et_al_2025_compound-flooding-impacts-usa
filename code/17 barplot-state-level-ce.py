@@ -14,13 +14,6 @@ import seaborn as sns
 df = pd.read_csv("../final_df_95th_coastal.csv")
 
 # Group the data by state and sum the relevant columns
-# state_data = (
-#     df.groupby("state")
-#     .agg({"total_events": "sum", "number_of_compound_events": "sum"})
-#     .reset_index()
-# )
-
-# Group the data by state and sum the relevant columns
 state_data = (
     df.groupby("state")
     .agg(
