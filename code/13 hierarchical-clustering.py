@@ -68,9 +68,6 @@ def preprocess_data(df):
     ]
     df_selected = df[columns]
 
-    # Remove rows where "percentage_contribution_surge" is zero
-    # df_selected = df_selected[df_selected["percentage_contribution_surge"] != 0]
-
     # Scale the features
     scaler = StandardScaler()
     df_scaled = pd.DataFrame(
@@ -161,9 +158,6 @@ def plot_all_dendrogram(
     for leaf, leaf_color in zip(plt.gca().get_xticklabels(), dend["leaves_color_list"]):
         leaf.set_color(leaf_color)
 
-    # Print the color list for the leaves of the dendrogram
-    # print("Color list: /n", dend["color_list"])
-
     plt.title("Hierarchical Clustering Dendrogram", fontsize=18)
     plt.xlabel(None)
     plt.ylabel("Distance \n(Ward's Linkage)", fontsize=14, labelpad=20)
@@ -199,9 +193,6 @@ def main():
     # Preprocess the data
     df_preprocessed = preprocess_data(df)
 
-    # Remove rows with missing values
-    # df_preprocessed = df_preprocessed.dropna()
-
     # Perform hierarchical clustering
     linkage_matrix = perform_hierarchical_clustering(df_preprocessed)
 
@@ -211,12 +202,6 @@ def main():
     cluster_assignments = fcluster(
         linkage_matrix, distance_threshold, criterion="distance"
     )
-
-    # Assign counties to clusters based on a distance threshold
-    # distance_threshold = 2.5  # Adjust this value as needed
-    # cluster_assignments = fcluster(
-    #     linkage_matrix, distance_threshold, criterion="distance"
-    # )
 
     # Create a DataFrame with clustering results
     clustering_results = pd.DataFrame(
@@ -229,7 +214,9 @@ def main():
     )
 
     # Save the clustering results to a CSV file
-    clustering_results.to_csv("../clustering_data/clustering_results_5.csv", index=False)
+    clustering_results.to_csv(
+        "../clustering_data/clustering_results_5.csv", index=False
+    )
 
     # Plot the dendrograms with 20 clusters per figure
     plot_all_dendrogram(linkage_matrix, df_preprocessed)
