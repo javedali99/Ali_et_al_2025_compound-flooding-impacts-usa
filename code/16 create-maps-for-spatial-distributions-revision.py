@@ -231,9 +231,6 @@ def plot_map(
         eastern_usa_state, merged_data, how="inner", predicate="intersects"
     )
 
-    # Add background map with light gray color to show counties and state boundaries clearly
-    # eastern_usa.boundary.plot(ax=ax, linewidth=0.5, color="0.8")
-
     # Plot the states with county information
     states_with_counties.boundary.plot(ax=ax, linewidth=0.5, color="black")
 
@@ -355,9 +352,6 @@ def plot_subplots(
             # Generate colormap and normalization
             cmap, norm = get_discrete_cmap_and_norm(column)
 
-            # Add background map with light gray color to show counties and state boundaries clearly
-            # eastern_usa.boundary.plot(ax=ax, linewidth=0.5, color="0.8")
-
             # Plot the states with county information
             states_with_counties.boundary.plot(ax=ax, linewidth=0.5, color="black")
 
@@ -433,20 +427,14 @@ def plot_loss_subplots(
     percentage_columns = [
         "loss_percentage_compound_property_damage",
         "loss_percentage_compound_crop_damage",
-        # "loss_percentage_compound_injuries",
-        # "loss_percentage_compound_fatalities",
     ]
     total_loss_columns = [
         "total_loss_property_damage",
         "total_loss_crop_damage",
-        # "total_loss_injuries",
-        # "total_loss_fatalities",
     ]
     titles = [
         "Property Damage by CF (in %)",
         "Crop Damage by CF (in %)",
-        # "Injuries by CF (in %)",
-        # "Fatalities by CF (in %)",
     ]
 
     fig, axes = plt.subplots(rows, cols, figsize=figsize)
@@ -485,13 +473,9 @@ def plot_loss_subplots(
     # Reproject merged_data to the same CRS as eastern_usa
     merged_data = merged_data.to_crs(eastern_usa.crs)
 
-    # Create a continuous colormap using seaborn's "rocket_r" palette
-    # rocket_r_palette = sns.color_palette("rocket_r", as_cmap=True)
-
     for i, (percentage_column, total_loss_column, title) in enumerate(
         zip(percentage_columns, total_loss_columns, titles)
     ):
-        # ax = axes[i // cols, i % cols]
         ax = axes[i]
 
         # Generate colormap and normalization
@@ -502,21 +486,13 @@ def plot_loss_subplots(
             merged_data["color"] = merged_data[total_loss_column].apply(
                 lambda x: "gray" if x == 0 else "original"
             )
-        # elif (
-        #     "total_loss_injuries" in total_loss_column.lower()
-        #     or "total_loss_fatalities" in total_loss_column.lower()
-        # ):
-        #     merged_data["color"] = merged_data[total_loss_column].apply(
-        #         lambda x: "gray" if x < 5 else "original"
-        #     )
+
         else:
             merged_data["color"] = "original"
 
         # Plot the counties
         gray_data = merged_data[merged_data["color"] == "gray"]
         colored_data = merged_data[merged_data["color"] == "original"]
-
-        # eastern_usa.boundary.plot(ax=ax, linewidth=0.5, color="0.8")
 
         # Plot the states with county information
         states_with_counties.boundary.plot(ax=ax, linewidth=0.5, color="black")
