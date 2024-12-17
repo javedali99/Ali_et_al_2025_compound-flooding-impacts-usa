@@ -269,24 +269,6 @@ def calculate_and_save_timeseries_and_percentiles(
         quant_interp.columns = ["Percentiles"]
         county_loc_df2 = pd.concat([county_loc_df2, quant_interp], axis=1)
 
-        # Instead of converting quant_interp to a DataFrame and then concatenating,
-        # directly assign the interpolated values to a new column in county_loc_df2
-        # county_loc_df2["Percentiles"] = np.interp(
-        #     county_loc_df2["dis24"],
-        #     quantiles_df["dis24"],
-        #     quantiles_df["Percentiles"],
-        # )
-
-        # Print the river discharge data with percentiles only for few counties for testing
-        # if county_name in [
-        #     "Accomack_County",
-        #     "Anne_Arundel_County",
-        #     "Arlington_County",
-        #     "Baldwin_County",
-        #     "Baltimore_County",
-        # ]:
-        #     print(county_loc_df2.head())
-
         # Save the combined DataFrame to a CSV file
         county_loc_df2.to_csv(
             f"../data/ready-for-analysis/river-discharge/{county_name}_{fips_code}/percentiles_with_discharge_data/combined_ts_with_percentiles_{county_name}_{fips_code}_{ids}.csv",
