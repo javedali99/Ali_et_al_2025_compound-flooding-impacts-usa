@@ -14,17 +14,18 @@ It takes into account the availability of storm surge and wave data and adjusts 
 
 # Import libraries
 import os
-import pandas as pd
-import numpy as np
-import seaborn as sns
-import matplotlib.pyplot as plt
-from datetime import datetime
-from tqdm import tqdm
 
 # Hide warnings
 import warnings
-warnings.filterwarnings("ignore")
+from datetime import datetime
 
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import seaborn as sns
+from tqdm import tqdm
+
+warnings.filterwarnings("ignore")
 
 
 # Function to plot the heatmaps
@@ -66,7 +67,9 @@ def create_heatmap_for_flood_drivers(
     hazard_imp_vars.to_csv(df_save_path, index=False)
 
     # Reorder columns to place the damage type first
-    ordered_cols = [sort_values_by] + [col for col in clim_vars if col != sort_values_by]
+    ordered_cols = [sort_values_by] + [
+        col for col in clim_vars if col != sort_values_by
+    ]
     hazard_imp_vars = hazard_imp_vars[ordered_cols]
 
     # drop hazard info columns
@@ -76,7 +79,6 @@ def create_heatmap_for_flood_drivers(
     heatmap_df = hazard_imp_vars.sort_values(sort_values_by, ascending=False).set_index(
         ["Hazard_start"]
     )
-
 
     if sort_values_by == "PropDmgAdj":
         heatmap_df = heatmap_df[heatmap_df["PropDmgAdj"] > 0]
@@ -90,11 +92,11 @@ def create_heatmap_for_flood_drivers(
     elif sort_values_by == "Injuries":
         heatmap_df = heatmap_df[heatmap_df["Injuries"] > 0]
 
-    # heatmap_df.drop(sort_values_by, axis=1, inplace=True)
-
     # Adjust colorbar length based on the number of rows
     num_rows_heatmap = len(heatmap_df)
-    cbar_len = 0.50 if num_rows_heatmap > 30 else 1  # Shorten colorbar if more than 30 rows
+    cbar_len = (
+        0.50 if num_rows_heatmap > 30 else 1
+    )  # Shorten colorbar if more than 30 rows
 
     # visualization
     plt.figure(figsize=figsize)  # (20, 18)
@@ -122,29 +124,27 @@ def create_heatmap_for_flood_drivers(
     for t in heatmap.texts:
         current_text = t.get_text()
 
-        text_transform = (
-            lambda x: f"{round(x / 1000000000, 2)}B"
+        text_transform = lambda x: (
+            f"{round(x / 1000000000, 2)}B"
             if x / 1000000000 >= 1
-            else f"{round(x / 1000000, 2)}M"
-            if x / 1000000 >= 1
-            else f"{round(x / 1000, 2)}K"
-            if x / 1000 >= 1
-            else f"{x}"
+            else (
+                f"{round(x / 1000000, 2)}M"
+                if x / 1000000 >= 1
+                else f"{round(x / 1000, 2)}K" if x / 1000 >= 1 else f"{x}"
+            )
         )
         t.set_text(text_transform(float(current_text)))
 
-    # ax.figure.axes[-1].yaxis.label.set_size(12)
-    # ax.figure.axes[-1].set_ylabel('Percentiles', size=14)
-    heatmap.set_ylabel(y_label, labelpad=10)  # fontsize=20
+    heatmap.set_ylabel(y_label, labelpad=10)
 
     if y_ticks == False:
         heatmap.axes.yaxis.set_ticks([])  # hide y-axis ticks
     elif y_ticks == True:
-        plt.yticks(rotation=0, fontsize=24)  # fontsize=20
+        plt.yticks(rotation=0, fontsize=24)
 
     # ax.axes.yaxis.set_visible(False) # hide whole axis label, ticks etc
-    plt.xticks(rotation=0, fontsize=24)  # fontsize=20,
-    heatmap.set_xlabel("Hydrometeorological Drivers", labelpad=20)  # fontsize=20
+    plt.xticks(rotation=0, fontsize=24)
+    heatmap.set_xlabel("Hydrometeorological Drivers", labelpad=20)
 
     ticklabels = [
         heatmap_df.index[int(tick)].strftime("%Y-%m-%d")
@@ -152,7 +152,7 @@ def create_heatmap_for_flood_drivers(
     ]
     heatmap.set_yticklabels(ticklabels)
 
-    plt.title(fig_title, loc="center", y=1.03)  # fontsize=28,
+    plt.title(fig_title, loc="center", y=1.03)
 
     # plt.tight_layout()
 
@@ -216,7 +216,11 @@ def process_county(county_info):
     county_info : DataFrame row
         A row from the dataframe containing county information (County, FIPS code, State).
     """
-    county_name, FIPS, state = county_info["County"], county_info["FIPS"], county_info["State"]
+    county_name, FIPS, state = (
+        county_info["County"],
+        county_info["FIPS"],
+        county_info["State"],
+    )
     base_path = f"../flood-impact-analysis/{county_name}_{FIPS}/"
     DATA_SAVE_PATH = f"{base_path}data_heatmaps/"
     FIGURE_SAVE_PATH = f"{base_path}heatmaps/"
@@ -224,42 +228,53 @@ def process_county(county_info):
     os.makedirs(FIGURE_SAVE_PATH, exist_ok=True)
 
     # Load and preprocess flood data
-    flood_df_path = os.path.join(base_path, f"flood_sheldus_df_{county_name}_{FIPS}.csv")
+    flood_df_path = os.path.join(
+        base_path, f"flood_sheldus_df_{county_name}_{FIPS}.csv"
+    )
     flood_df = pd.read_csv(flood_df_path)
     flood_df["Hazard_start"] = pd.to_datetime(flood_df["Hazard_start"])
     flood_df["Hazard_end"] = pd.to_datetime(flood_df["Hazard_end"])
 
-    base_vars = ["Hazard", "Hazard_start", "Hazard_end", "Percentiles_precip", "Percentiles_discharge", "Percentiles_soil_moisture"]
+    base_vars = [
+        "Hazard",
+        "Hazard_start",
+        "Hazard_end",
+        "Percentiles_precip",
+        "Percentiles_discharge",
+        "Percentiles_soil_moisture",
+    ]
 
     # Generate heatmaps for each type of damage
     for damage_type in ["PropDmgAdj", "CropDmgAdj", "Fatalities", "Injuries"]:
         vars = get_climate_variables(flood_df, base_vars + [damage_type])
 
-        # # Generate labels for the heatmap
-        # labels = [label_dict.get(var, var) for var in vars if var not in ["Hazard", "Hazard_start", "Hazard_end"]]
-
         # Filter out unwanted columns and generate labels for the heatmap
         damage_label = label_dict[damage_type]
-        labels = [damage_label] + [label_dict.get(var, var) for var in vars if
-                                   var not in ["Hazard", "Hazard_start", "Hazard_end", damage_type]]
+        labels = [damage_label] + [
+            label_dict.get(var, var)
+            for var in vars
+            if var not in ["Hazard", "Hazard_start", "Hazard_end", damage_type]
+        ]
 
         # Dynamically determine the figure size
         num_rows = len(flood_df)
-        # fig_height = max(4, min(40, num_rows*0.82))  # Adjust the divisor to change row-to-height ratio
+        # Adjust the divisor to change row-to-height ratio
         fig_height = num_rows * 0.82
 
         # Number of rows for the figure if the damage type is not property damage based on the crop damage or fatalities/injuries
         num_rows_else = len(
-            flood_df[(flood_df["CropDmgAdj"] > 0) | (flood_df["Fatalities"] > 0) | (flood_df["Injuries"] > 0)])
-
-        # fig_height_else = num_rows_else * 1.75
+            flood_df[
+                (flood_df["CropDmgAdj"] > 0)
+                | (flood_df["Fatalities"] > 0)
+                | (flood_df["Injuries"] > 0)
+            ]
+        )
 
         # Set figure height for other damage types; use a default height if no rows are found
         if num_rows_else > 0:
             fig_height_else = max(4, num_rows_else * 1.75)
         else:
             fig_height_else = 4  # Default minimum height
-
 
         create_heatmap_for_flood_drivers(
             df=flood_df,
@@ -271,7 +286,10 @@ def process_county(county_info):
             df_save_path=f"{DATA_SAVE_PATH}flood_{damage_type}_heatmap_{county_name}_{state}_{FIPS}.csv",
             fig_title=f"{damage_type} for SHELDUS Flooding Events and its Drivers in {county_name}, {state} ({FIPS})",
             fig_save_path=f"{FIGURE_SAVE_PATH}flood_{damage_type}_heatmap_{county_name}_{FIPS}.png",
-            figsize=(24, fig_height if damage_type == "PropDmgAdj" else fig_height_else),
+            figsize=(
+                24,
+                fig_height if damage_type == "PropDmgAdj" else fig_height_else,
+            ),
         )
 
     print(f"Script completed successfully for {county_name}, {state} ({FIPS})!")
@@ -287,7 +305,7 @@ label_dict = {
     "Percentiles_discharge": "River \nDischarge",
     "Percentiles_soil_moisture": "Soil \nMoisture",
     "surge_percentiles": "Storm \nSurge",
-    "waveHs_percentiles": "Wave \nHeight"
+    "waveHs_percentiles": "Wave \nHeight",
 }
 
 base_labels = ["Precipitation", "River \nDischarge", "Soil \nMoisture"]
