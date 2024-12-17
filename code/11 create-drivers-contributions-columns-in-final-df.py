@@ -24,6 +24,7 @@ Usage:
 Dependencies:
     - pandas
     - numpy
+    - tqdm
 
 """
 
