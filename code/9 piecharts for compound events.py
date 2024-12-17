@@ -119,10 +119,6 @@ def check_compound_events(flood_df, threshold, hazard, hazard_clim_vars):
     # Calculate the number of compound events (where sum_thresh >= 2)
     compound_events = hazard_vars[hazard_vars["sum_thresh"] >= 2 * threshold]
 
-    # Check columns in compound events
-    # print(compound_events.columns) --> it has all the columns from the original dataset.
-    # print(CE_df.columns)
-
     # Calculate the number of compound events
     nb_compound_events = len(compound_events)
 
@@ -132,8 +128,6 @@ def check_compound_events(flood_df, threshold, hazard, hazard_clim_vars):
         for var, col_name in analysis_vars.items()
         if col_name in CE_df
     }
-
-    # print(frequency_counts) #--> It has all the variables from the original dataset.
 
     # Calculate losses due to compound events
     compound_losses = {
@@ -186,16 +180,6 @@ def check_compound_events(flood_df, threshold, hazard, hazard_clim_vars):
         "fatalities": compound_losses["fatalities"],
     }
 
-    # Print summary of compound event analysis
-    # print("== Compound Event Analysis Summary ==")
-    # for key, value in output_info.items():
-    #     if isinstance(value, dict):
-    #         for sub_key, sub_value in value.items():
-    #             print(f"{sub_key.capitalize().replace('_', ' ')}: {sub_value}")
-    #     else:
-    #         print(f"{key.capitalize().replace('_', ' ')}: {value}")
-    # print("==" * 40)
-
     # Additional calculations for detailed information
     loss_percentage_compound = {
         key: (
@@ -239,15 +223,6 @@ def check_compound_events(flood_df, threshold, hazard, hazard_clim_vars):
 
     # Create the dataframe
     df_output_info = pd.DataFrame(rows)
-
-    # Save the dataframe to a CSV file
-    # df_output_info.to_csv(f"{DATA_SAVE_PATH}compound_events_analysis_{county_name}_{FIPS}.csv", index=False)
-
-    # Create a pandas dataframe with all the information from the output_info dictionary and save it to a CSV file
-    # df_output_info = pd.DataFrame.from_dict(output_info, orient='index')
-    # df_output_info.reset_index(inplace=True)
-    # df_output_info.rename(columns={'index': 'info', df_output_info.columns[1]: 'data'}, inplace=True)
-    # df_output_info.to_csv(f"{DATA_SAVE_PATH}compound_events_analysis_{county_name}_{FIPS}.csv", index=False)
 
     # Return tuple with frequency counts of each variable in compound events and total losses
     return (
@@ -405,9 +380,6 @@ try:
             f"../flood-impact-analysis/combined_flooding_events_analysis_all_counties_final.csv",
             index=False,
         )
-
-        # Check the column names in the dictionary
-        # print(dict_flood_data["thresh_0.95"].keys())
 
         # Prepare the data for the pie charts
         pie_chart_dicts = {}
