@@ -39,7 +39,7 @@ These scripts process flood drivers datasets to prepare for analysis:
 - **`4_soil-moisture-data-prep.py`**: Analyzes soil moisture data, calculates percentiles, and integrates with hazard data.  
 - **`5_wave-data-prep.py`**: Prepares wave height data, calculates percentiles, and identifies maxima during hazard windows.  
 
----
+
 
 ### **2. Flood Impact Analysis**  
 Scripts to combine and analyze flooding events and their socio-economic impacts:  
@@ -47,7 +47,7 @@ Scripts to combine and analyze flooding events and their socio-economic impacts:
 - **`10_create-drivers-contributions-columns-in-final-df.py`**: Computes contributions of each hydrometeorological driver to compound flood events.  
 - **`11_subset-final-df-csv.py`**: Filters the final dataset based on thresholds for compound flooding events and excludes irrelevant FIPS codes.  
 
----
+
 
 ### **3. Visualization**  
 Scripts to visualize the results of flood driver analysis:  
@@ -55,7 +55,7 @@ Scripts to visualize the results of flood driver analysis:
 - **`9_piecharts_for_compound_events.py`**: Creates pie charts showing the contributions of each driver to flooding events for key counties.  
 - **`16_barplot-state-level-ce.py`**: Produces bar plots highlighting the percentage of compound events and losses at the state level.  
 
----
+
 
 ### **4. Clustering and Spatial Analysis**  
 Scripts to identify spatial patterns and dominant flood drivers:  
@@ -64,33 +64,14 @@ Scripts to identify spatial patterns and dominant flood drivers:
 - **`14_dominant-drivers-in-clusters.py`**: Summarizes the dominant flood drivers for each identified cluster using pie charts.  
 - **`15_create-maps-for-spatial-distributions.py`**: Creates choropleth maps to visualize flood driver contributions and loss metrics across counties.  
 
----
+
 
 ### **5. Loss Contribution Analysis**  
 Scripts for detailed analysis of property and crop losses due to compound flooding:  
 - **`17_median-CF-losses-contributions.py`**: Computes median loss contributions for property and crop damage and generates maps to display the results.  
 
----
-
-## **Figures**
-
-The following visualizations are generated and stored in the `figures/` directory:
-
-1. **Fig.1**: **Percentage of Compound Flooding Events** – Displays county-level compound flooding percentages.  
-2. **Fig.2**: **Flood Driver Metrics** – Shows contributions of flood drivers across multiple metrics.  
-3. **Fig.3**: **Top-10 Counties Pie Charts** – Highlights the drivers contributing to flood events in the top-10 counties.  
-4. **Fig.4**: **Cluster-Specific Pie Charts** – Summarizes flood driver variability within identified clusters.  
-5. **Fig.5**: **Cluster Distributions** – Visualizes spatial distributions of county clusters with similar flood characteristics.  
-6. **Fig.6**: **Loss and Loss Ratios** – Compares property and crop losses for compound and univariate flood events.  
-7. **Fig.7**: **Methodology Flowchart** – Summarizes the workflow of data preparation, analysis, and visualization.  
 
 
 
-## **Contact**  
-
-For questions or suggestions, please contact:  
-
-**Javed Ali**  
-- Email: [javed.ali@ucf.edu](mailto:javed.ali@ucf.edu)
 
 
