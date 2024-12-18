@@ -21,7 +21,7 @@ The study investigates compound flood events caused by multiple hydrometeorologi
 </br>
 
 **CITATIONS**
->1. Ali, J. et al. (2024). Multivariate compound events drive historical floods and associated losses along the U.S. East and Gulf coasts (Version 1). Zenodo. https://doi.org/10.5281/zenodo.14510116
+>1. Ali, J., Wahl, T., Morim, D. J., R. Enríquez, A., Gall, M., & Emrich, C. (2024). Multivariate compound events drive historical floods and associated losses along the U.S. East and Gulf coasts (Version 1). Zenodo. https://doi.org/10.5281/zenodo.14510116
 
 >2. Javed Ali, Thomas Wahl, Joao Morim et al. Multivariate compound events drive historical floods and associated losses along the U.S. East and Gulf coasts, 26 September 2024, PREPRINT (Version 1) available at Research Square [https://doi.org/10.21203/rs.3.rs-5040855/v1]
 
