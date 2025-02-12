@@ -53,9 +53,8 @@ Scripts to combine and analyze flooding events and their socio-economic impacts:
 Scripts to visualize the results of flood driver analysis:  
 - **`8_heatmaps_for_all_counties.py`**: Generates heatmaps to display driver contributions across all counties.  
 - **`9_piecharts_for_compound_events.py`**: Creates pie charts showing the contributions of each driver to flooding events for key counties.  
-- **`16_barplot-state-level-ce.py`**: Produces bar plots highlighting the percentage of compound events and losses at the state level.
 - **`15_create-maps-for-spatial-distributions.py`**: Creates choropleth maps to visualize flood driver contributions and loss metrics across counties.  
-
+- **`16_barplot-state-level-ce.py`**: Produces bar plots highlighting the percentage of compound events and losses at the state level.
 
 
 ### **4. Clustering and Spatial Analysis**  
