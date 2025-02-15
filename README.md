@@ -16,7 +16,7 @@
 
 This repository contains Python scripts for data processing, analysis, impact assessment, clustering, spatial analysis, and visualization supporting the research paper: "Multivariate compound events drive historical floods and associated losses along the U.S. East and Gulf coasts", currently in press at [npj Natural Hazards](https://www.nature.com/npjnathazards/).
 
-The study investigates compound flood events caused by multiple hydrometeorological drivers (e.g., storm surge, precipitation, river discharge, soil moisture, wave heights) across 203 coastal counties in the U.S. East and Gulf coasts from 1980 to 2018. We quantify flood frequencies, identify dominant drivers, analyze regional patterns, and link these events to socio-economic losses (e.g., property and crop damage).
+The study investigates compound flood events caused by multiple flood drivers (e.g., storm surge, precipitation, river discharge, soil moisture, wave heights) across 203 coastal counties in the U.S. East and Gulf coasts from 1980 to 2018. We quantify compound flooding frequencies, identify dominant drivers, analyze regional patterns, and link these events to socio-economic losses (e.g., property and crop damage).
 
 </br>
 
