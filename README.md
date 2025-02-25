@@ -23,7 +23,7 @@ The study investigates compound flood events caused by multiple flood drivers (e
 **CITATIONS**
 >1. Ali, J. (2024). Analysis of historical socio-economic losses driven by multivariate compound flooding events (Version 1). Zenodo. https://doi.org/10.5281/zenodo.14510116
 
->2. Ali, J., Wahl, T., Morim, J. et al. Multivariate compound events drive historical floods and associated losses along the U.S. East and Gulf coasts. npj Nat. Hazards 2, 19 (2025). https://doi.org/10.1038/s44304-025-00076-5
+>2. Ali, J., Wahl, T., Morim, J. et al. Multivariate compound events drive historical floods and associated losses along the U.S. East and Gulf coasts. __*npj Nat. Hazards*__ 2, 19 (2025). https://doi.org/10.1038/s44304-025-00076-5
 
 </br>
 
