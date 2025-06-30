@@ -25,6 +25,9 @@ The study investigates compound flood events caused by multiple flood drivers (e
 
 >2. Ali, J., Wahl, T., Morim, J. et al. Multivariate compound events drive historical floods and associated losses along the U.S. East and Gulf coasts. __*npj Nat. Hazards*__ 2, 19 (2025). https://doi.org/10.1038/s44304-025-00076-5
 
+For the Dataset, please cite:
+>3. Ali, J. (2025). Dataset for manuscript: Multivariate compound events drive historical floods and associated losses along the U.S. East and Gulf coasts (Version v1) [Data set]. Zenodo. https://doi.org/10.5281/zenodo.15777192
+
 </br>
 
 
