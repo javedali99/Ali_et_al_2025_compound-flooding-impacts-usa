@@ -4,6 +4,14 @@
   <h1 align="center">Multivariate compound events drive historical floods and associated losses along the U.S. East and Gulf coasts</h1>
 </p>
 
+<div align="center">
+
+[![Manuscript DOI](https://img.shields.io/badge/Manuscript-10.1038/s44304--025--00076--5-green?style=for-the-badge&logo=doi)](https://doi.org/10.1038/s44304-025-00076-5) [![Code DOI](https://img.shields.io/badge/Code-10.5281/zenodo.14510116-blue?style=for-the-badge&logo=github)](https://doi.org/10.5281/zenodo.14510116) [![Dataset DOI](https://img.shields.io/badge/🗄️_Dataset-10.5281/zenodo.15777192-orange?style=for-the-badge&logo=database)](https://doi.org/10.5281/zenodo.15777192)
+
+</div>
+
+
+
 <!--
 <br>
 
